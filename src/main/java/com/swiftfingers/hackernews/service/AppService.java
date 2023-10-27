@@ -75,7 +75,7 @@ public class AppService {
         Map<String, Integer> wordCount = new LinkedHashMap<>(); //to preserve order of insertion
 
         if (titles == null)
-            throw new RuntimeException("No data found for last week");
+            throw new RuntimeException("No data was found for last week");
 
         for (String title : titles) {
             String[] words = title.split("\\s+"); // Split the string by whitespace
