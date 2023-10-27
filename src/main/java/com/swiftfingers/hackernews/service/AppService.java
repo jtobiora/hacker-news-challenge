@@ -73,7 +73,7 @@ public class AppService {
 
 
     public List<String> findMostOccuringWordsInTitlesLastWeek () {
-        List<String> titles = findTopStoryTitles();
+        List<String> titles = findTopStoryTitlesByLastWeek();
         Map<String, Integer> wordCount = new LinkedHashMap<>(); //to preserve order of insertion
 
         if (titles == null)
@@ -100,7 +100,7 @@ public class AppService {
         return topWords;
     }
 
-    public List<String> findTopStoryTitles() {
+    public List<String> findTopStoryTitlesByLastWeek() {
         List<String> titlesList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
 
