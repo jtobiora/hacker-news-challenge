@@ -54,9 +54,7 @@ public class AppService {
 
             if (Objects.nonNull(newsStory) && newsStory.getTitle() != null) {
                 String[] wordsArr = newsStory.getTitle().split("\\s+");
-                for (String word: wordsArr) {
-                    wordCount.put(word, wordCount.containsKey(word) ? wordCount.get(word) + 1 : 1);
-                }
+                wordCount = filterWord(wordsArr);
             }
         }
 
@@ -79,12 +77,7 @@ public class AppService {
 
         for (String title : titles) {
             String[] words = title.split("\\s+"); // Split the string by whitespace
-            //make sure the title has values
-            if (words.length > 0) {
-                for (String word : words) {
-                    wordCount.put(word, wordCount.containsKey(word) ? wordCount.get(word) + 1 : 1);
-                }
-            }
+            wordCount = filterWord(words);
         }
 
         // Sort the words by frequency count
@@ -151,10 +144,7 @@ public class AppService {
         for (String title : storyTitles) {
            if (title != null) {
                String[] words = title.split("\\s+"); // Split by whitespace
-               for (String word : words) {
-                   word = word.toLowerCase(); // Convert to lowercase to ensure case insensitivity
-                   wordCount.put(word, wordCount.getOrDefault(word, 0) + 1);
-               }
+               wordCount = filterWord(words);
            }
         }
 
@@ -197,6 +187,17 @@ public class AppService {
         }
 
         return storyTitles;
+    }
+
+    private Map<String, Integer> filterWord (String[] words) {
+        Map<String, Integer> wordCount = new HashMap<>(); //to preserve order of insertion
+        if (words.length > 0) {
+            for (String word : words) {
+                wordCount.put(word, wordCount.containsKey(word) ? wordCount.get(word) + 1 : 1);
+            }
+        }
+
+        return wordCount;
     }
 
 
