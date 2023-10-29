@@ -73,7 +73,12 @@ public class AppService {
 
 
     public List<String> findMostOccuringWordsInTitlesLastWeek () {
-        List<String> titles = findTopStoryTitlesByLastWeek();
+        List<NewsStory> stories = findTopStoryByLastWeek();
+        List<String> titles = null;
+        if (stories != null) {
+            titles = stories.stream().filter(Objects::nonNull).map(NewsStory::getTitle).collect(Collectors.toList());
+        }
+
         Map<String, Integer> wordCount = new LinkedHashMap<>(); //to preserve order of insertion
 
         if (titles == null)
@@ -100,8 +105,8 @@ public class AppService {
         return topWords;
     }
 
-    public List<String> findTopStoryTitlesByLastWeek() {
-        List<String> titlesList = new ArrayList<>();
+    public List<NewsStory> findTopStoryByLastWeek() {
+        List<NewsStory> storyList = new ArrayList<>();
         LocalDateTime now = LocalDateTime.now();
 
         // Get the start of the last week
@@ -115,17 +120,16 @@ public class AppService {
             NewsStory newsStory = restTemplate.getForObject(storyUrl, NewsStory.class);
 
             if (newsStory != null && Objects.nonNull(newsStory.getTitle())) {
-                    //check if the story is last week
+                   //check if the story is last week
                 LocalDateTime dateTime = LocalDateTime.ofInstant(newsStory.getTime(), ZoneOffset.UTC);
                 if (dateTime.isAfter(lastWeekStart) && dateTime.isBefore(now)) {
-                    log.info("Story obtained here are of last week");
-                    titlesList.add(newsStory.getTitle());
+                    storyList.add(newsStory);
                 }
             }
 
         }
 
-        return titlesList;
+        return storyList;
     }
 
 
