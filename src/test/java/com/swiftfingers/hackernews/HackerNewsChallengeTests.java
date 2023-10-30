@@ -72,7 +72,7 @@ public class HackerNewsChallengeTests {
         LocalDateTime lastWeekDate = LocalDateTime.now().minusWeeks(1); //last week date
         for (NewsStory story: newsStories) {
             LocalDateTime dateTime = LocalDateTime.ofInstant(story.getTime(), ZoneOffset.UTC);
-            if (dateTime.isAfter(lastWeekDate)) {
+            if (dateTime.isAfter(lastWeekDate) || dateTime.isBefore(lastWeekDate)) {
                 Assertions.fail("Date is not exactly last week!");
             }
         }
